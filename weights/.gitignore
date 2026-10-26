@@ -1,0 +1,6 @@
+# Exported GPT-2 parameter dumps (regenerate with modelLoader/main.py)
+*.txt
+
+# Keep tokenizer files tracked
+!tokenizer/
+!tokenizer/**
