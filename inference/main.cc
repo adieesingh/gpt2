@@ -2,6 +2,23 @@
 #include <fstream>
 #include <ifstream>
 #include <math>
+using tensor =std::vector<float>
+struct TransformerInput
+{
+    // this for attention
+    tensor qWeights,kWeights,vWeights;
+    tensor qBiases,kWeights,vWeights;  
+
+    // this is for mjp
+    tensor l1Weights,l2Weights;
+    tensor l1Biases,l2Biases;
+
+    tensor oWeights,oBaises;
+
+    tensor lnAttnWeights,lnAttnBiases;
+    tensor lnMlpWeights,lnMlpWeights;
+};
+
 float gelu(float x){
     return .5 * x   *(1+std::tanh(std::sqrt(2/M_PI)*(x+0.044715*x*x*x)));
 }
