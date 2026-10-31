@@ -19,23 +19,33 @@ struct TransformerInputs
     tensor lnAttnWeights, lnAttnBiases;
     tensor lnMlpWeights, lnMlpBaises;
     TransformerInputs(
-        tensor qWeights,tensor kWeights,tensor vWeights,
-        tensor qBiases,tensor kBaises,tensor vBaises,
-        tensor l1Weights,tensor l2Weights,
-        tensor l1Biases,tensor l2Biases,
-        tensor oWeights,tensor oBaises,
-        tensor lnAttnWeights,tensor lnAttnBiases,
-        tensor lnMlpWeights, tensor lnMlpBaises      
-    ):
-        qWeights(std::move(qWeights)),kWeights(std::move(kWeights)),vWeights(std::move(vWeights)),
-        qBiases(std::move(qBiases)),kBaises(std::move(kWeights)),vBaises(std::move(vBaises)),
-        l1Weights(std::move(l1Weights)),l2Weights(std::move(l2Weights)),
-        oWeights(std::move(oWeights)),oBaises(std::move(oBaises)),
-        lnAttnBiases(std::move(lnAttnBiases)),lnAttnWeights(std::move(lnAttnWeights)),
-        lnMlpWeights(std::move(lnMlpWeights)),lnMlpBaises(std::move(lnMlpBaises))
-    {};
+        tensor qWeights, tensor kWeights, tensor vWeights,
+        tensor qBiases, tensor kBaises, tensor vBaises,
+        tensor l1Weights, tensor l2Weights,
+        tensor l1Biases, tensor l2Biases,
+        tensor oWeights, tensor oBaises,
+        tensor lnAttnWeights, tensor lnAttnBiases,
+        tensor lnMlpWeights, tensor lnMlpBaises) : qWeights(std::move(qWeights)), kWeights(std::move(kWeights)), vWeights(std::move(vWeights)),
+                                                   qBiases(std::move(qBiases)), kBaises(std::move(kWeights)), vBaises(std::move(vBaises)),
+                                                   l1Weights(std::move(l1Weights)), l2Weights(std::move(l2Weights)),
+                                                   oWeights(std::move(oWeights)), oBaises(std::move(oBaises)),
+                                                   lnAttnBiases(std::move(lnAttnBiases)), lnAttnWeights(std::move(lnAttnWeights)),
+                                                   lnMlpWeights(std::move(lnMlpWeights)), lnMlpBaises(std::move(lnMlpBaises)) {};
 };
+struct gptWeights
+{
+    // embeding,postional embedding
+    tensor embeddingWeights, postionEmbeddingWeights;
+    // for transformers
+    std::vector<TransformerInputs> transformerWeights;
 
+    // but after everything
+    tensor finalBiases, finalWeights;
+
+    gptWeights(const std::vector<TransformerInputs> &transformerWeights_in,
+               const tensor &finalBiases_in, const tensor &finalWeights_in) : transformerWeights(transformerWeights_in), finalBiases(finalBiases_in),
+                                                                              finalWeights(finalWeights_in) {}
+};
 float gelu(float x)
 {
     return .5 * x * (1 + std::tanh(std::sqrt(2 / M_PI) * (x + 0.044715 * x * x * x)));
