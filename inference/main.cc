@@ -42,28 +42,39 @@ struct gptWeights
     // but after everything
     tensor finalBiases, finalWeights;
 
-    gptWeights():transformerWeights(12){
-             auto readFromFileStream = [](std::vector<float> &vec, std::ifstream &stream, int maxCount = 0)
+    gptWeights() : transformerWeights(12)
     {
-        float input;
-        if (maxCount > 0)
-        {
-            while (stream >> input)
-            {
-                vec.push_back(input);
 
-                maxCount--;
-                if (maxCount == 0)
+        auto readFromFileStream = [&](std::vector<float> &vec, std::ifstream &stream, int maxCount = 0)
+        {
+            float input;
+            if (maxCount > 0)
+            {
+                while (stream >> input)
                 {
-                    break;
+                    vec.push_back(input);
+
+                    maxCount--;
+                    if (maxCount == 0)
+                    {
+                        break;
+                    }
+                }
+                while (stream >> input)
+                {
+                    vec.push_back(input);
                 }
             }
-            while (stream >> input)
+            for (int i = 0; i < 12; i++)
             {
-                vec.push_back(input);
+                {
+                    std::ifstream f1("../weights/transformer.h" + std::to_string(i) + ".ln_1.weight.txt");
+                    std::ifstream f2("../weights/transformer.h" + std::to_string(i) + ".ln_1.weight.txt");
+                    readFromFileStream(transformerWeights[i].lnAttnWeights, f1);
+                    readFromFileStream(transformerWeights[i].lnAttnBiases, f2);
+                }
             }
-        }
-    };
+        };
     }
 };
 float gelu(float x)
@@ -72,5 +83,4 @@ float gelu(float x)
 }
 void loadWeights()
 {
-   
 }
