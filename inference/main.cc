@@ -8,7 +8,7 @@ struct TransformerInputs
 {
     // this for attention
     tensor qWeights, kWeights, vWeights;
-    tensor qBiases, kWeights, vWeights;
+    tensor qBiases, kBaises, vBaises;
 
     // this is for mjp
     tensor l1Weights, l2Weights;
@@ -20,16 +20,20 @@ struct TransformerInputs
     tensor lnMlpWeights, lnMlpBaises;
     TransformerInputs(
         tensor qWeights,tensor kWeights,tensor vWeights,
-        tensor qBiases,tensor kWeights,tensor vWeights,
+        tensor qBiases,tensor kBaises,tensor vBaises,
         tensor l1Weights,tensor l2Weights,
-        tensor l1Biases,tesnor l2Biases,
+        tensor l1Biases,tensor l2Biases,
         tensor oWeights,tensor oBaises,
-        tensor lnAttnBiases,tensor lnAttnBiases,
+        tensor lnAttnWeights,tensor lnAttnBiases,
         tensor lnMlpWeights, tensor lnMlpBaises      
-    ):(
+    ):
         qWeights(std::move(qWeights)),kWeights(std::move(kWeights)),vWeights(std::move(vWeights)),
-        
-    )
+        qBiases(std::move(qBiases)),kBaises(std::move(kWeights)),vBaises(std::move(vBaises)),
+        l1Weights(std::move(l1Weights)),l2Weights(std::move(l2Weights)),
+        oWeights(std::move(oWeights)),oBaises(std::move(oBaises)),
+        lnAttnBiases(std::move(lnAttnBiases)),lnAttnWeights(std::move(lnAttnWeights)),
+        lnMlpWeights(std::move(lnMlpWeights)),lnMlpBaises(std::move(lnMlpBaises))
+    {};
 };
 
 float gelu(float x)
@@ -58,5 +62,5 @@ void loadWeights()
                 vec.push_back(input);
             }
         }
-    }
+    };
 }
