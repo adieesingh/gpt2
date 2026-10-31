@@ -1,12 +1,10 @@
-#define _USE_MATH_DEFINES
 #include <vector>
 #include <iostream>
-#include <fstream>
 #include <fstream>
 #include <cmath>
 
 using tensor = std::vector<float>;
-struct TransformerInput
+struct TransformerInputs
 {
     // this for attention
     tensor qWeights, kWeights, vWeights;
@@ -19,7 +17,19 @@ struct TransformerInput
     tensor oWeights, oBaises;
 
     tensor lnAttnWeights, lnAttnBiases;
-    tensor lnMlpWeights, lnMlpWeights;
+    tensor lnMlpWeights, lnMlpBaises;
+    TransformerInputs(
+        tensor qWeights,tensor kWeights,tensor vWeights,
+        tensor qBiases,tensor kWeights,tensor vWeights,
+        tensor l1Weights,tensor l2Weights,
+        tensor l1Biases,tesnor l2Biases,
+        tensor oWeights,tensor oBaises,
+        tensor lnAttnBiases,tensor lnAttnBiases,
+        tensor lnMlpWeights, tensor lnMlpBaises      
+    ):(
+        qWeights(std::move(qWeights)),kWeights(std::move(kWeights)),vWeights(std::move(vWeights)),
+        
+    )
 };
 
 float gelu(float x)
